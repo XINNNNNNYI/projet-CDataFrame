@@ -54,23 +54,23 @@ int nombre_occureneces(COLUMN*col, int valeur);
  * @param valeur dont tu veux connaitre sa position
  * @return int de l'indice de la position de valeure
  */
-int indice_position(COLUMN*col, int valeur);
+int valeur_pos(COLUMN*col, int valeur);
 
 /**
  *
  * @param col pointeur sur une colonne
- * @param valeur dont tu veux connaitre sa valeur superieur
- * @return int de la valeur superieur de valeur
+ * @param valeur dont tu veux connaitre son nb de valeur superieur
+ * @return int du nb de valeur inf à val
  */
-int valeur_supereur(COLUMN*col, int valeur);
+int nb_valeur_supereur(COLUMN*col, int val);
 
 /**
  *
  * @param col pointeur sur une colonne
- * @param valeur dont tu veux connaitre sa valeur inf
- * @return int de la valeur inf de valeur
+ * @param valeur dont tu veux connaitre son nb de valeur inf
+ * @return int du nombre de valeur inf à val
  */
-int valeur_inferieur(COLUMN*col, int valeur);
+int nb_valeur_inferieur(COLUMN*col, int val);
 
 
 

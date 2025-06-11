@@ -14,54 +14,79 @@ COLUMN*create_column(char*titre){
 }
 
 int insert_value(COLUMN*col, int value){
+
     if(col->taille_physique==0) {
         col->donnee = malloc(REALLOC_SIZE * sizeof(int));
-        if (col->donnee == 0)
+        if (col->donnee == NULL) {
+            printf("Erreur de malloc\n");
             return 0;
+        }
         col->taille_physique = REALLOC_SIZE;
     }
-    else if(col->taille_logique >= col->taille_physique ){
-        int *data=realloc(col->donnee,(col->taille_physique+REALLOC_SIZE));
-        if (data==NULL)
+    else if(col->taille_logique >= col->taille_physique ) {
+        int *data=realloc(col->donnee,(col->taille_physique+REALLOC_SIZE)*sizeof(int));
+        if (data==NULL){
+            printf("Erreur de realloc\n");
             return 0;
+        }
         col->taille_physique+=REALLOC_SIZE;
-        col->donnee=data;}
-    col->donnee[col->taille_logique++]  = value;
+        col->donnee=data;
+    }
+    if (col->taille_logique < col->taille_physique) {
+        col->donnee[col->taille_logique++] = value;
+    } else {
+        printf("Erreur : taille logique depasse taille physique.\n");
+        return 0;
+    }
+
+    if (col->donnee[col->taille_logique-1] != value) {
+        printf("Erreur, la valeur n'a pas bien ete insert\n");
+        return 0;
+    }
     return 1;
 }
 
 void delete_column(COLUMN*col) {
+    free(col->donnee);
     free(col);
     col = NULL;
 }
 
 void print_col(COLUMN*col){
     if(col->donnee==NULL)
-        printf("Y'a rien ! \n");
+        printf("%s : non initilise ! \n", col->titre);
     else
         for (int i = 0; i < (col->taille_logique); i++) {
             printf("[%d] %d\n", i, col->donnee[i]);
         }
 }
 
-int nombre_occureneces(COLUMN*col, int valeure){
+int nombre_occureneces(COLUMN*col, int valeur){
+    if (col->donnee == NULL) {
+        printf("Erreur : colonne non initialisée.\n");
+        return -1;
+    }
+    printf("Valeur recherchee : %d\n", valeur);
+
     int oc=0;
     for(int i=0; i< col->taille_logique; i++){
-        if(col->donnee[i]==valeure){
+        if(col->donnee[i]==valeur){
             oc++;
         }
-
     }
     return oc;
 }
 
-int indice_position(COLUMN*col, int pos){
-    if(pos>=col->taille_logique)
-        return 0;
-    return col->donnee[pos];
+int valeur_pos(COLUMN*col, int indice){
+    if(indice>=col->taille_logique || indice<0) {
+        printf("erreur : la position est hors limite");
+        return -1;
+    }
+    printf("Valeur pos : %d \n", col->donnee[indice]);
+    return col->donnee[indice];
 }
 
-int valeur_supereur(COLUMN*col, int valeure) {
+int nb_valeur_supereur(COLUMN*col, int valeure) {
     int oc = 0;
     for (int i = 0; i < col->taille_logique;i++) {
         if (col->donnee[i] > valeure) {
@@ -71,10 +96,10 @@ int valeur_supereur(COLUMN*col, int valeure) {
     return oc;
 }
 
-int valeur_inferieur(COLUMN*col, int valeure) {
+int nb_valeur_inferieur(COLUMN*col, int valeur) {
     int oc = 0;
     for (int i = 0; i < col->taille_logique;i++) {
-        if (col->donnee[i] < valeure) {
+        if (col->donnee[i] < valeur) {
             oc++;
         }
     }
