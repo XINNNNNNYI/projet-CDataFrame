@@ -26,24 +26,20 @@ void add_line(DF *df);
 
 void delete_line(DF*df,int indice);
 
-void rename_column(DF*df);
+void rename_column(DF*df, int nb_column,char*new_title);
 
 int value_exists(DF*df, int value);
 
 void replace_value(DF*df, int value);
 
-int print_nb_column(DF*df);
+void print_nb_column(DF*df);
 
-int print_nb_line(DF*df);
+void print_nb_line(DF*df);
 
-int print_nb_value_sup(DF*df, int val);
+int nb_value_sup(DF*df, int val);
 
-int print_nb_value_inf(DF*df, int val);
+int nb_value_inf(DF*df, int val);
 
-int print_nb_value_equal(DF*df, int val);
-
-
-
-
+int nb_value_equal(DF*df, int val);
 
 #endif

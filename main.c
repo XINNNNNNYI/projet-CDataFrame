@@ -1,5 +1,8 @@
 #include "colonne.h"
+#include "dataframe.h"
 int main() {
+
+    /*
     COLUMN*col = create_column("Colonne");
     print_col(col);
 
@@ -20,6 +23,18 @@ int main() {
     printf("val inf de 16 : %d \n", nb_valeur_inferieur(col,16));
     printf("nb occurence : %d\n", nombre_occureneces(col,16));
     delete_column(col);
+    **/
+
+    DF*df = create_empty_DF();
+    df->colonne = malloc(5*sizeof(COLUMN));
+    add_column(df);
+    printf("test\n");
+    add_line(df);
+    printf("test2\n");
+    fill_df(df);
+    printf("test3\n");
+    print_df(df);
+
 
     return 0;
 }
