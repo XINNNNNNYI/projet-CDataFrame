@@ -15,7 +15,7 @@ int main() {
     }
     print_col(col);
 
-    printf("valeur qui a pour indice 16 : %d \n",valeur_pos(col,16));
+    printf("valeur qui a pour indice 16 : %d\n",valeur_pos(col,16));
     printf("valeur sup de 16 : %d \n",nb_valeur_supereur(col,16));
     printf("val inf de 16 : %d \n", nb_valeur_inferieur(col,16));
     printf("nb occurence : %d\n", nombre_occureneces(col,16));
