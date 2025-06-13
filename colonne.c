@@ -106,3 +106,13 @@ int nb_valeur_inferieur(COLUMN*col, int valeur) {
     return oc;
 }
 
+int nb_valeur_egale(COLUMN*col, int valeur) {
+    int oc = 0;
+    for (int i = 0; i < col->taille_logique;i++) {
+        if (col->donnee[i] == valeur) {
+            oc++;
+        }
+    }
+    return oc;
+}
+

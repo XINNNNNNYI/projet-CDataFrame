@@ -72,6 +72,6 @@ int nb_valeur_supereur(COLUMN*col, int val);
  */
 int nb_valeur_inferieur(COLUMN*col, int val);
 
-
+int nb_valeur_egale(COLUMN*col, int valeur);
 
 #endif

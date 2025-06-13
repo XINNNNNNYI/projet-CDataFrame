@@ -15,7 +15,6 @@
         int value;
         for (int i = df->colonne[0]->taille_logique; i < df->nb_ligne; i++) {
             for (int j = 0; j < df->nb_colonne; j++) {
-                printf("test caca\n");
                 printf("inserer une valeur ");
                 scanf("%d",&value);
                 insert_value(*df->colonne,value);
@@ -66,8 +65,7 @@
 
     void add_column(DF*df,char*titre) {
         COLUMN* new_cl = create_column(titre);
-        printf("Test\n");
-        df->colonne[0] = new_cl;
+        df->colonne[df->nb_colonne] = new_cl;
         df->nb_colonne++;
     }
 
@@ -114,5 +112,28 @@ void print_nb_line(DF*df) {
         printf("Le nombre de ligne est de : %d \n", df->nb_ligne);
     }
 
+int nb_value_sup(DF*df, int val) {
+        int cpt =0;
+        for (int i = 0; i < df->nb_colonne; i++) {
+            cpt+=nb_valeur_supereur(df->colonne[i],val);
+        }
+        return cpt;
+    }
+
+int nb_value_inf(DF*df, int val) {
+        int cpt =0;
+        for (int i = 0; i < df->nb_colonne; i++) {
+            cpt+=nb_valeur_inferieur(df->colonne[i],val);
+        }
+        return cpt;
+    }
+
+int nb_value_equal(DF*df, int val) {
+        int cpt = 0;
+        for (int i = 0; i < df->nb_colonne; i++) {
+            cpt+=nb_valeur_egale(df->colonne[i],val);
+        }
+        return cpt;
+    }
 
 

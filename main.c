@@ -25,6 +25,7 @@ int main() {
     delete_column(col);
     **/
 
+    /*
     DF*df = create_empty_DF();
     df->colonne = malloc(5*sizeof(COLUMN));
     add_column(df,"hydb");
@@ -34,6 +35,7 @@ int main() {
     fill_df(df);
     printf("test3\n");
     print_df(df);
+    **/
 
     return 0;
 }

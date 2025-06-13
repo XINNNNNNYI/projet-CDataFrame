@@ -6,6 +6,7 @@ typedef struct dataframe{
     COLUMN **colonne;
     int nb_ligne;
     int nb_colonne;
+    int*index;
 }DF;
 
 DF*create_empty_DF();
