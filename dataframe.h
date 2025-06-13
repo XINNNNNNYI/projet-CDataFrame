@@ -14,11 +14,11 @@ void fill_df(DF*df);
 
 void print_df(DF*df);
 
-void print_line_df(DF*df);
+void print_line_df(DF*df,int nb_ligne_a_print);
 
 void print_column_df(DF*df);
 
-void add_column(DF *df);
+void add_column(DF *df,char*titre);
 
 void delete_column_df(DF*df,int indice);
 
@@ -30,7 +30,7 @@ void rename_column(DF*df, int nb_column,char*new_title);
 
 int value_exists(DF*df, int value);
 
-void replace_value(DF*df, int value);
+void replace_value(DF*df, int value,int nb_line_i,int nb_column_j);
 
 void print_nb_column(DF*df);
 

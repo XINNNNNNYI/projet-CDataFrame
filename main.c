@@ -27,14 +27,13 @@ int main() {
 
     DF*df = create_empty_DF();
     df->colonne = malloc(5*sizeof(COLUMN));
-    add_column(df);
-    printf("test\n");
+    add_column(df,"hydb");
+    printf("test1\n");
     add_line(df);
     printf("test2\n");
     fill_df(df);
     printf("test3\n");
     print_df(df);
-
 
     return 0;
 }
