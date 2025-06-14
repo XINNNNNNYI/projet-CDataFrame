@@ -6,11 +6,12 @@
 
 #define REALLOC_SIZE 256
 
-typedef struct{
+typedef struct colonne{
     char*titre;
     int *donnee;
     int taille_physique;
     int taille_logique;
+    struct colonne* next;
 }COLUMN;
 
 /**
@@ -59,7 +60,7 @@ int nombre_occureneces(COLUMN*col, int valeur);
 
 /**
  *
- * @param1 col Pointeur sur une colonne
+ * @param col Pointeur sur une colonne
  * @param valeur dont tu veux connaitre sa position
  * @return int de l'indice de la position de valeure
  */
@@ -68,7 +69,7 @@ int valeur_pos(COLUMN*col, int valeur);
 /**
  *
  * @param col pointeur sur une colonne
- * @param valeur dont tu veux connaitre son nb de valeur superieur
+ * @param val valeur dont tu veux connaitre son nb de valeur superieur
  * @return int du nb de valeur inf à val
  */
 int nb_valeur_supereur(COLUMN*col, int val);
@@ -76,7 +77,7 @@ int nb_valeur_supereur(COLUMN*col, int val);
 /**
  *
  * @param col pointeur sur une colonne
- * @param valeur dont tu veux connaitre son nb de valeur inf
+ * @param val valeur dont tu veux connaitre son nb de valeur inf
  * @return int du nombre de valeur inf à val
  */
 int nb_valeur_inferieur(COLUMN*col, int val);

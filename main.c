@@ -25,17 +25,26 @@ int main() {
     delete_column(col);
     **/
 
-    /*
     DF*df = create_empty_DF();
-    df->colonne = malloc(5*sizeof(COLUMN));
-    add_column(df,"hydb");
-    printf("test1\n");
+    //df->colonne = malloc(5*sizeof(COLUMN));
+    char titre[40];
+    scanf(" %s",titre);
+    printf("%s\n",titre);
+    int i;
+    scanf("%d",&i);
+    printf("%d\n",i);
+    add_column(df,titre);
+    printf("%s\n",df->colonne[df->nb_colonne-1]->titre);
     add_line(df);
     printf("test2\n");
-    fill_df(df);
-    printf("test3\n");
     print_df(df);
-    **/
+    printf("test3\n");
+    delete_column_df(df,0);
+    printf("test4\n");
+    add_column(df,"hcfhcfh");
+    printf("test5\n");
+    print_df(df);
+
 
     return 0;
 }

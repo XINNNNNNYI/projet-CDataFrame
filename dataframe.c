@@ -8,7 +8,7 @@ DF *create_empty_DF() {
     DF *df= malloc(sizeof(DF));
     if (df==NULL)
         return NULL;
-    df->colonne = NULL;
+    df->colonne = malloc(REALLOC_SIZE*sizeof(COLUMN));
     df->nb_colonne = 0;
     df->nb_ligne = 0;
     df->index = malloc(sizeof(int)*REALLOC_SIZE);
@@ -20,7 +20,11 @@ DF *create_empty_DF() {
 }
 
 void fill_line_df(DF *df,int line_index) {
-    int value;
+    if (df->nb_colonne == 0) {
+        printf("erreur il n'y a pas de colonne\n");
+        return;
+    }
+    int value=0;
     for (int j = 0; j < df->nb_colonne; j++) {
         printf("inserer une valeur pour la ligne %d, colonne : %s \n",line_index,df->colonne[j]->titre);
         scanf("%d",&value);
@@ -33,7 +37,7 @@ void fill_column_df(DF *df,int column_index) {
         printf("erreur il n'y a pas de colonne a cette indice\n");
         return;
     }
-    int value;
+    int value=0;
     if (df->nb_ligne==0) {
         printf("t'as pas de ligne !");
         return;
