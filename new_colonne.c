@@ -108,7 +108,7 @@ void delete_column(Column* col){
     }
 }
 
-void print_object(Objet_value* ob, unsigned long long int i, char* str, unsigned int taille_logique) {
+void print_object(Objet_value* ob, char* str, unsigned int taille_logique) {
     if (!ob || !str || taille_logique == 0) return;
     switch (ob->type) {
         case OBJECT_INT:
