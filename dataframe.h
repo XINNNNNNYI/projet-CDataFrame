@@ -7,17 +7,20 @@ typedef struct dataframe{
     int nb_ligne;
     int nb_colonne;
     int*index;
+    int one;
 }DF;
 
 DF*create_empty_DF();
 
-void fill_df(DF*df);
+void fill_line_df(DF*df,int line_index);
+
+void fill_column_df(DF*df);
 
 void print_df(DF*df);
 
 void print_line_df(DF*df,int nb_ligne_a_print);
 
-void print_column_df(DF*df);
+void print_column_df(DF*df,int nb_colonne_a_print);
 
 void add_column(DF *df,char*titre);
 
