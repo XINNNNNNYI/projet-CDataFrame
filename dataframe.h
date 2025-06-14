@@ -14,7 +14,7 @@ DF*create_empty_DF();
 
 void fill_line_df(DF*df,int line_index);
 
-void fill_column_df(DF*df);
+void fill_column_df(DF*df,int column_index);
 
 void print_df(DF*df);
 
@@ -30,7 +30,7 @@ void add_line(DF *df);
 
 void delete_line(DF*df,int indice);
 
-void rename_column(DF*df, int nb_column,char*new_title);
+void rename_column(DF*df, int num_column,char*new_title);
 
 int value_exists(DF*df, int value);
 

@@ -21,12 +21,21 @@ typedef struct{
 COLUMN*create_column(char*titre);
 
 /**
-* @brief : Add a new value to a column
+* @brief : Add a new value to a column at the last emplacement
 * @param1 : Pointer to a column
 * @param2 : The value to be added
 * @return : 1 if the value is added 0 otherwise
 */
 int insert_value(COLUMN*col, int value);
+
+/**
+ *
+ * @param col colonne
+ * @param value valeur
+ * @param num_line num de la ligne qu'on veut qu'il ecrase/change
+ * @return
+ */
+int insert_value_i(COLUMN*col, int value,int num_line);
 
 /**
 * @brief : Free allocated memory

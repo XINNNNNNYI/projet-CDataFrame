@@ -14,7 +14,6 @@ COLUMN*create_column(char*titre){
 }
 
 int insert_value(COLUMN*col, int value){
-
     if(col->taille_physique==0) {
         col->donnee = malloc(REALLOC_SIZE * sizeof(int));
         if (col->donnee == NULL) {
@@ -40,6 +39,20 @@ int insert_value(COLUMN*col, int value){
     }
 
     if (col->donnee[col->taille_logique-1] != value) {
+        printf("Erreur, la valeur n'a pas bien ete insert\n");
+        return 0;
+    }
+    return 1;
+}
+
+int insert_value_i(COLUMN*col, int value,int num_line) {
+    if (num_line < col->taille_physique) {
+        col->donnee[num_line] = value;
+    } else {
+        printf("Erreur : votre ligne depasse taille physique.\n");
+        return 0;
+    }
+    if (col->donnee[num_line] != value) {
         printf("Erreur, la valeur n'a pas bien ete insert\n");
         return 0;
     }
@@ -115,4 +128,7 @@ int nb_valeur_egale(COLUMN*col, int valeur) {
     }
     return oc;
 }
+
+
+
 
