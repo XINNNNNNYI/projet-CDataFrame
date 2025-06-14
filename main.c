@@ -17,7 +17,7 @@ int main() {
     insert_value(mycol, &c);
     insert_value(mycol, &d);
 
-    print_value(mycol, 2, str, 20);
+    print_value(mycol, 2, str, N);
     printf("%s\n", str);
 
     delete_column(mycol);
