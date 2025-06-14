@@ -1,59 +1,93 @@
-#ifndef PROJET_C_NEW_COLONNE_H
-#define PROJET_C_NEW_COLONNE_H
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "new_colonne.h"
 
-#define REALLOC_SIZE 256
+Column* create_column(Enum_Type type, char* column_name) {
+    Column* col = (Column*) malloc(sizeof(Column));
+    if (col == NULL)
+        return NULL;
 
-typedef enum {
-    NULLVAL = 1,
-    UNINT,
-    INT,
-    CHAR,
-    FLOAT,
-    DOUBLE,
-    STRING,
-    OBJECT
-} Enum_Type;
+    col->column_name = column_name;
+    col->column_type = type;
+    col->taille_logique = 0;
+    col->taille_physique = 0;
+    col->donnee = NULL;
+    col->index = NULL;
+    col->valid_index = 0;
+    col->sort_dir = 0;
+    col->index_size = 0;
 
-typedef union {
-    unsigned int uint_value;
-    signed int int_value;
-    unsigned short ushort_value;
-    signed short short_value;
-    unsigned long long int ulong_int;
-    signed long long int long_int;
-    unsigned char uchar_value;
-    signed char char_value;
-    float float_value;
-    double double_value;
-    char* string_value;
-    void* object_value;
-} Column_Type;
+    return col;
+}
 
-typedef struct Column {
-    char* column_name;
-    unsigned int taille_logique;
-    unsigned int taille_physique;
-    Enum_Type column_type;
-    Column_Type** donnee;  
+int insert_value(Column* col, void* value) {
+    if (col == NULL || value == NULL)
+        return 0;
 
-    unsigned long long int* index;
-    char valid_index;
-    char sort_dir;
-    unsigned int index_size;
-} Column;
+    if (col->taille_physique == 0) {
+        col->donnee = malloc(REALLOC_SIZE * sizeof(Column_Type*));
+        if (col->donnee == NULL)
+            return 0;
+        col->taille_physique = REALLOC_SIZE;
+    } else if (col->taille_logique >= col->taille_physique) {
+        Column_Type** data = realloc(col->donnee, (col->taille_physique + REALLOC_SIZE) * sizeof(Column_Type*));
+        if (data == NULL)
+            return 0;
+        col->donnee = data;
+        col->taille_physique += REALLOC_SIZE;
+    }
 
+    Column_Type* new_val = (Column_Type*) malloc(sizeof(Column_Type));
+    if (new_val == NULL)
+        return 0;
 
-Column* create_column(Enum_Type type, char* column_name);
-int insert_value(Column* col, void* value);
-void delete_column(Column* col);
-void print_value(Column* col, unsigned long long int i, char* str, int size);
-void print_col(Column* col);
-void info_column(Column* col);
+    switch (col->column_type) {
+        case UNINT:
+            new_val->uint_value = *(unsigned int*) value;
+            break;
+        case INT:
+            new_val->int_value = *(int*) value;
+            break;
+        case CHAR:
+            new_val->char_value = *(char*) value;
+            break;
+        case FLOAT:
+            new_val->float_value = *(float*) value;
+            break;
+        case DOUBLE:
+            new_val->double_value = *(double*) value;
+            break;
+        case STRING:
+            if (*(char**)value == NULL) {
+                new_val->string_value = NULL;
+            } else {
+                size_t len = strlen(*(char**)value);
+                new_val->string_value = malloc(len + 1);
+                if (new_val->string_value == NULL) {
+                    free(new_val);
+                    return 0;
+                }
+                strcpy(new_val->string_value, *(char**)value);
+            }
+            break;
+        case OBJECT:
+            new_val->object_value = value;
+            break;
+        case NULLVAL:
+        default:
+            printf("Type de colonne non géré\n");
+            free(new_val);
+            return 0;
+    }
 
-#endif // PROJET_C_NEW_COLONNE_H
+    col->donnee[col->taille_logique] = new_val;
 
+    if (col->index != NULL)
+        col->index[col->taille_logique] = col->taille_logique;
 
+    col->taille_logique++;
+    col->valid_index = -1;
 
-
+    return 1;
+}
