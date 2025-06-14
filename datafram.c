@@ -15,7 +15,10 @@ return df;}
 void remplissage_dur(dataframe*df){
     if (df==NULL)
         return 0;
-    Column *col=create_column(char*titre);
+    char*titre=NULL;
+    printf("Saisir le nom de la colonne");
+    scanf("%s", titre);
+    Column *col=create_column(titre);
     if(col==NULL)
         return 0;
     for (int i=0; i<df->nombre_ligne; i++){
@@ -28,7 +31,10 @@ void remplissage_dur(dataframe*df){
 int ajouter_colonne(dataframe*df, char*titre){
     if (df==NULL)
         return 0;
-    Column*create_column(char*titre);
+    char*titre=NULL;
+    printf("Saisir le nom de la colonne");
+    scanf("%s", titre)
+    Column*create_column(titre);
     if(col==NULL)
         return 0;
     for(int i=0; i<df->nombre_ligne; i++){
