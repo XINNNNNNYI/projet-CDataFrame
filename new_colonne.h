@@ -1,6 +1,7 @@
 #ifndef PROJET_C_NEW_COLONNE_H
 #define PROJET_C_NEW_COLONNE_H
-#include<stdio.h>
+
+#include <stdio.h>
 
 #define REALLOC_SIZE 256
 
@@ -26,31 +27,33 @@ typedef union {
     signed char char_value;
     float float_value;
     double double_value;
-    char *string_value;
-    void *object_value;
+    char* string_value;
+    void* object_value;
 } Column_Type;
 
 typedef struct Column {
-    char *column_name;
-    unsigned int size;
+    char* column_name;
+    unsigned int taille_logique;
     unsigned int taille_physique;
     Enum_Type column_type;
-    Column_Type **donnee; // tableau de pointeurs vers l'union Column_Type
+    Column_Type** donnee;  
 
-    unsigned long long int *index;
+    unsigned long long int* index;
     char valid_index;
     char sort_dir;
     unsigned int index_size;
 } Column;
 
-Column* create_column(Enum_Type type, char *column_name);
-int insert_value(Column *col, void *value);
+// Fonctions associées
+Column* create_column(Enum_Type type, char* column_name);
+int insert_value(Column* col, void* value);
+void delete_column(Column* col);
+void print_value(Column* col, unsigned long long int i, char* str, int size);
+void print_col(Column* col);
+void info_column(Column* col);
 
-#endif
-void delete_column(Column*col);
-void print_value(Column*col, unsigned long long int i, char*str, int size);
-void print_col(Column*col);
-void info_column(Column*col);
+#endif // PROJET_C_NEW_COLONNE_H
 
 
-#endif //PROJET_C_NEW_COLONNE_H
+
+
