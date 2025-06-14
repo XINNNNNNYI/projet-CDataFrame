@@ -2,7 +2,7 @@
 #define PROJET_C_DATAFRAME_H
 #include "colonne.h"
 typedef struct{
-    COLUMN**colonne;
+    Column**colonne;
     int nombre_colonne;
     int nombre_ligne;
 }dataframe;
