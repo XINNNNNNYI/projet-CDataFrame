@@ -23,4 +23,11 @@ int main() {
     delete_column(mycol);
 
     return 0;
+    // c'est un autre main
+    Column* mycol = create_column(CHAR);
+    char a = 'A', c = 'C';
+    inser_value(mycol, &a);
+    inser_value(mycol, NULL);
+    inser_value(mycol, &c);
+    print_col(mycol);
 }
