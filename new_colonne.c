@@ -181,3 +181,11 @@ void print_value(Column* col, unsigned long long int i, char* str, unsigned int 
             break;
     }
 }
+void print_col(Column* col){
+    
+        char str[64];
+        for (unsigned int i = 0; i < col->taille_logique; i++) {
+            print_value(col, i, str, sizeof(str));
+            printf("[%u] %s\n", i, str);
+        }
+    }
