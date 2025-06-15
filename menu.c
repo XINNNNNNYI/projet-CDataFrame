@@ -19,6 +19,7 @@ void menu() {
         switch (option) {
             case 1: {
                 char titre[50];
+                printf("Veuillez saisir le titre : ");
                 scanf("%49s",titre);
                 add_column(df,titre);
                 break;

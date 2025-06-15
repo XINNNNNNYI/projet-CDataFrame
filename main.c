@@ -2,7 +2,6 @@
 #include "dataframe.h"
 #include <stdio.h>
 int main() {
-    DF*df = create_empty_DF();
     /*
     COLUMN*col = create_column("Colonne");
     print_col(col);
@@ -46,6 +45,6 @@ int main() {
     add_line(df);
     print_df(df);
     */
-
+    menu();
     return 0;
 }

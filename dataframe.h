@@ -49,4 +49,6 @@ int nb_value_equal(DF*df, int val);
 
 int nb_occ(DF*df, int val);
 
+void menu();
+
 #endif
