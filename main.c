@@ -30,4 +30,13 @@ int main() {
     inser_value(mycol, NULL);
     inser_value(mycol, &c);
     print_col(mycol);
+    //le troisème main
+     Column* col = create_column(INT, "caca");
+    int x = 10, y = 20;
+    insert_value(col, &x);
+    insert_value(col, NULL);
+    insert_value(col, &y);
+    info_column(col);
+  
+
 }
