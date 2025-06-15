@@ -4,18 +4,23 @@
 
 #include "colonne.h"
 
+void clear_buffer() {
+    while(getchar()!='\n');
+}
 DF *create_empty_DF() {
     DF *df= malloc(sizeof(DF));
     if (df==NULL)
         return NULL;
-    df->colonne = malloc(REALLOC_SIZE*sizeof(COLUMN));
+    df->colonne = malloc(REALLOC_SIZE*sizeof(COLUMN*));
+    if (df->colonne==NULL)
+        return NULL;
+
     df->nb_colonne = 0;
     df->nb_ligne = 0;
     df->index = malloc(sizeof(int)*REALLOC_SIZE);
     if (df->index==NULL)
         return NULL;
     memset(df->index, -1, sizeof(int)*REALLOC_SIZE);
-    df->one = 0;
     return df;
 }
 
@@ -26,10 +31,16 @@ void fill_line_df(DF *df,int line_index) {
     }
     int value=0;
     for (int j = 0; j < df->nb_colonne; j++) {
-        printf("inserer une valeur pour la ligne %d, colonne : %s \n",line_index,df->colonne[j]->titre);
+        printf("inserer une valeur pour la ligne %d, colonne %s : \n",line_index,df->colonne[j]->titre);
+        clear_buffer();
         scanf("%d",&value);
-        insert_value_i(df->colonne[j],value,line_index);
+        if (!insert_value_i(df->colonne[j],value,line_index)) {
+            printf("erreur : la valeur n'est pas bien insere\n");
+            delete_column(df->colonne[j]);
+            return;
+        }
     }
+
 }
 
 void fill_column_df(DF *df,int column_index) {
@@ -37,15 +48,20 @@ void fill_column_df(DF *df,int column_index) {
         printf("erreur il n'y a pas de colonne a cette indice\n");
         return;
     }
-    int value=0;
     if (df->nb_ligne==0) {
-        printf("t'as pas de ligne !");
+        printf("t'as pas de ligne donc je ne vais pas pouvoir saisir de donnee !\n");
         return;
     }
     for (int i = 0; i < df->nb_ligne; i++) {
+        int value=0;
         printf("inserer une valeur pour la colonne %s, ligne : %d \n", df->colonne[column_index]->titre, i);
+        clear_buffer();
         scanf("%d",&value);
-        insert_value(df->colonne[column_index],value);
+        if (!insert_value(df->colonne[column_index],value)) {
+            printf("erreur : la valeur n'est pas bien insere");
+            delete_column(df->colonne[column_index]);
+            return;
+        }
     }
 }
 
@@ -55,9 +71,11 @@ void print_df(DF *df) {
         return;
     }
     for (int i = 0; i < df->nb_ligne; i++) {
-        printf("Ligne [%d] : \n",i);
+        printf("Ligne [%d] :| ",i);
         for (int j = 0; j < df->nb_colonne; j++) {
-            printf("%d ",df->colonne[j]->donnee[df->index[i]]);
+            if (df->colonne[j] != NULL) {
+                printf("%d |",df->colonne[j]->donnee[df->index[i]]);
+            }
         }
         printf("\n");
     }
@@ -89,7 +107,23 @@ void print_column_df(DF*df,int nb_colonne_a_print) {
 
 void add_column(DF*df,char*titre) {
     COLUMN* new_cl = create_column(titre);
+    if (new_cl==NULL){
+        printf("Erreur d'allocation ! \n");
+        return;
+    }
+    for (int i = 0; i <= df->nb_colonne; i++) {
+        if (df->colonne[i]==NULL) {
+            df->colonne[i] = new_cl;
+            if (df->nb_ligne != 0) {
+                fill_column_df(df,df->nb_colonne);
+            }
+            return;
+        }
+    }
     df->colonne[df->nb_colonne] = new_cl;
+    if (df->nb_ligne != 0) {
+        fill_column_df(df,df->nb_colonne);
+    }
     df->nb_colonne++;
 }
 
@@ -99,10 +133,16 @@ void delete_column_df(DF*df, int indice) {
         return;
     }
     delete_column(df->colonne[indice]);
+    df->colonne[indice] = NULL;
+    df->nb_colonne--;
 }
 
 void add_line(DF*df) {
-    for (int i = 0; i < df->index[df->colonne[0]->taille_physique]; i++) {
+    if (df->nb_colonne == 0){
+        printf("Erreur : y'a  pas de colonne veillez cree un aavnt de creer un ligne ! \n");
+        return;
+    }
+    for (int i = 0; i < df->colonne[0]->taille_physique; i++) {
         if (df->index[i]<0 ) {
             if (i < df->colonne[0]->taille_logique) {
                 df->index[i] = abs(df->index[i]);
@@ -126,6 +166,19 @@ void delete_line(DF*df,int indice) {
     df->nb_ligne--;
 }
 
+void delete_df(DF*df) {
+    for (int i = 0; i < df->nb_ligne; i++) {
+        delete_line(df,i);
+    }
+    for (int i = 0; i < df->nb_colonne; i++) {
+        delete_column(df->colonne[i]);
+        free(df->colonne[i]);
+    }
+    free(df->index);
+    free(df->colonne);
+    free(df);
+}
+
 void rename_column(DF*df,int num_column, char*new_title) {
     if (df->colonne[num_column] == NULL) {
         printf("erreur : tu ne peux pas renommer une colonne qui n'existe pas ! \n");
@@ -138,7 +191,6 @@ int value_exists(DF*df, int value) {
     for (int i = 0; i < df->nb_ligne; i++) {
         for (int j = 0; j < df->nb_colonne; j++) {
             if (value) {
-                printf("la valeur existe ! \n");
                 return 1;
             }
         }
@@ -183,6 +235,14 @@ int nb_value_equal(DF*df, int val) {
     int cpt = 0;
     for (int i = 0; i < df->nb_colonne; i++) {
         cpt+=nb_valeur_egale(df->colonne[i],val);
+    }
+    return cpt;
+}
+
+int nb_occ(DF*df, int val) {
+    int cpt = 0;
+    for (int i = 0; i < df->nb_colonne; i++) {
+        cpt += nombre_occureneces(df->colonne[i],val);
     }
     return cpt;
 }

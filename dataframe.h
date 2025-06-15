@@ -7,7 +7,6 @@ typedef struct dataframe{
     int nb_ligne;
     int nb_colonne;
     int*index;
-    int one;
 }DF;
 
 DF*create_empty_DF();
@@ -30,6 +29,8 @@ void add_line(DF *df);
 
 void delete_line(DF*df,int indice);
 
+void delete_df(DF*df);
+
 void rename_column(DF*df, int num_column,char*new_title);
 
 int value_exists(DF*df, int value);
@@ -45,5 +46,7 @@ int nb_value_sup(DF*df, int val);
 int nb_value_inf(DF*df, int val);
 
 int nb_value_equal(DF*df, int val);
+
+int nb_occ(DF*df, int val);
 
 #endif

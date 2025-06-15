@@ -1,7 +1,8 @@
 #include "colonne.h"
 #include "dataframe.h"
+#include <stdio.h>
 int main() {
-
+    DF*df = create_empty_DF();
     /*
     COLUMN*col = create_column("Colonne");
     print_col(col);
@@ -24,27 +25,27 @@ int main() {
     printf("nb occurence : %d\n", nombre_occureneces(col,16));
     delete_column(col);
     **/
-
+    /**
     DF*df = create_empty_DF();
     //df->colonne = malloc(5*sizeof(COLUMN));
     char titre[40];
     scanf(" %s",titre);
     printf("%s\n",titre);
-    int i;
-    scanf("%d",&i);
-    printf("%d\n",i);
     add_column(df,titre);
-    printf("%s\n",df->colonne[df->nb_colonne-1]->titre);
+    //printf("le titre : %s\n",df->colonne[df->nb_colonne-1]->titre);
     add_line(df);
-    printf("test2\n");
+    //printf("index 0 : %d\n",df->index[0]);
+    //printf("nb de ligne : %d\n",df->nb_ligne);
     print_df(df);
-    printf("test3\n");
+    //printf("taille logique : %d\n",df->colonne[0]->taille_logique);
+    printf("je vais supp la colonne \n");
+    add_column(df,"2");
     delete_column_df(df,0);
-    printf("test4\n");
-    add_column(df,"hcfhcfh");
-    printf("test5\n");
+    add_column(df,"3");
     print_df(df);
-
+    add_line(df);
+    print_df(df);
+    */
 
     return 0;
 }

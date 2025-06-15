@@ -7,8 +7,12 @@ COLUMN*create_column(char*titre){
     if(col==NULL)
         return NULL;
     col->titre=titre;
-    col->donnee=NULL;
-    col->taille_physique=0;
+    col->donnee = malloc(REALLOC_SIZE * sizeof(int));
+    if (col->donnee == NULL) {
+        printf("Erreur de malloc pour la colonne de donnee\n");
+        return NULL;
+    }
+    col->taille_physique = REALLOC_SIZE;
     col->taille_logique=0;
     return col;
 }
@@ -31,13 +35,12 @@ int insert_value(COLUMN*col, int value){
         col->taille_physique+=REALLOC_SIZE;
         col->donnee=data;
     }
-    if (col->taille_logique < col->taille_physique) {
+    else if (col->taille_logique < col->taille_physique) {
         col->donnee[col->taille_logique++] = value;
     } else {
         printf("Erreur : taille logique depasse taille physique.\n");
         return 0;
     }
-
     if (col->donnee[col->taille_logique-1] != value) {
         printf("Erreur, la valeur n'a pas bien ete insert\n");
         return 0;
@@ -48,12 +51,14 @@ int insert_value(COLUMN*col, int value){
 int insert_value_i(COLUMN*col, int value,int num_line) {
     if (num_line < col->taille_physique) {
         col->donnee[num_line] = value;
-    } else {
-        printf("Erreur : votre ligne depasse taille physique.\n");
+        col->taille_logique++;
+    }
+    else if (col->donnee[num_line] != value) {
+        printf("Erreur, la valeur n'a pas bien ete insert\n");
         return 0;
     }
-    if (col->donnee[num_line] != value) {
-        printf("Erreur, la valeur n'a pas bien ete insert\n");
+    else {
+        printf("Erreur : votre ligne depasse taille physique.\n");
         return 0;
     }
     return 1;
@@ -92,7 +97,7 @@ int nombre_occureneces(COLUMN*col, int valeur){
 
 int valeur_pos(COLUMN*col, int indice){
     if(indice>=col->taille_logique || indice<0) {
-        printf("erreur : la position est hors limite");
+        printf("erreur : la position est hors limite\n");
         return -1;
     }
     printf("Valeur pos : %d \n", col->donnee[indice]);
