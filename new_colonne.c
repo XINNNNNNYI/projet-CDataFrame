@@ -21,19 +21,19 @@ Column* create_column(Enum_Type type, char* titre) {
     return col;
 }
 
-int insert_value(Column* col, void* value) {
+void insert_value(Column* col, void* value) {
     if (col == NULL || value == NULL)
-        return 0;
+        return ;
 
     if (col->taille_physique == 0) {
         col->donnee = malloc(REALLOC_SIZE * sizeof(Column_Type *));
         if (col->donnee == NULL)
-            return 0;
+            return ;
         col->taille_physique = REALLOC_SIZE;
     } else if (col->taille_logique >= col->taille_physique) {
         Column_Type **data = realloc(col->donnee, (col->taille_physique + REALLOC_SIZE) * sizeof(Column_Type *));
         if (data == NULL)
-            return 0;
+            return ;
         col->donnee = data;
         col->taille_physique += REALLOC_SIZE;
     }
@@ -88,11 +88,11 @@ int insert_value(Column* col, void* value) {
             break;
         default:
             printf("le type de valeur est non géré");
-            return 0;
+            return ;
     }
 
     col->taille_logique++;
-    return 1;
+    return ;
 }
 
 void delete_column(Column* col){
