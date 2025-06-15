@@ -9,8 +9,8 @@ void menu() {
         printf("choisir une option : \n "
            "[1] - Ajouter une colonne (saisie aussi les donnees manquants) \n "
            "[2] - Ajouter une ligne (saisie aussi les donnees manquants)\n "
-           "[3] - Suprimer une colonne\n "
-           "[4] - Suprimer une ligne\n "
+           "[3] - Suprimer une ligne\n "
+           "[4] - Suprimer une colonne\n "
            "[5] - Afficher (df, colonne, ligne)\n "
            "[6] - Renomer une colonne\n "
            "[7] - Autres fonctionnalites\n "
@@ -87,6 +87,7 @@ void menu() {
                         break;
                     }
                 }
+                break;
             }
             case 6: {
                 char new_title[50];
@@ -99,7 +100,7 @@ void menu() {
                 break;
             }
             case 7: {
-                int option_print;
+                int option_p;
                 printf("\n Que voulez-vous faire ?\n "
                    "[1] - Regarder si une valeur existe\n "
                    "[2] - Regarder le nombre de cellules contenant une valeur égale a x (x a saisie)\n "
@@ -108,8 +109,8 @@ void menu() {
                    "[5] - Regarder le nombre d'occurences d'une valeur (valeur a saisir)\n "
                    "[6] - Remplacer une valeur\n "
                    "[0] - \n ");
-                scanf("%d", &option_print);
-                switch(option_print) {
+                scanf("%d", &option_p);
+                switch(option_p) {
                     case 1: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
@@ -172,6 +173,7 @@ void menu() {
                         break;
                     }
                 }
+                break;
             }
             case 0: {
                 printf("Fermeture du programme...");

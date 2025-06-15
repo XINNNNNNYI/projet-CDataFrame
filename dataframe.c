@@ -14,7 +14,6 @@ DF *create_empty_DF() {
     df->colonne = malloc(REALLOC_SIZE*sizeof(COLUMN*));
     if (df->colonne==NULL)
         return NULL;
-
     df->nb_colonne = 0;
     df->nb_ligne = 0;
     df->index = malloc(sizeof(int)*REALLOC_SIZE);
@@ -107,6 +106,7 @@ void print_column_df(DF*df,int nb_colonne_a_print) {
 
 void add_column(DF*df,char*titre) {
     COLUMN* new_cl = create_column(titre);
+
     if (new_cl==NULL){
         printf("Erreur d'allocation ! \n");
         return;
@@ -115,9 +115,10 @@ void add_column(DF*df,char*titre) {
         if (df->colonne[i]==NULL) {
             df->colonne[i] = new_cl;
             if (df->nb_ligne != 0) {
-                fill_column_df(df,df->nb_colonne);
+                fill_column_df(df,i);
+                df->nb_colonne++;
+                return;
             }
-            return;
         }
     }
     df->colonne[df->nb_colonne] = new_cl;
