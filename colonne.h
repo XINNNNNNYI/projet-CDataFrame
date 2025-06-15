@@ -3,6 +3,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
 
 #define REALLOC_SIZE 256
 

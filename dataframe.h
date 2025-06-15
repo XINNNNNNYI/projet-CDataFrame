@@ -4,6 +4,7 @@
 
 typedef struct dataframe{
     COLUMN **colonne;
+    int taille_colonne;
     int nb_ligne;
     int nb_colonne;
     int*index;
@@ -50,5 +51,7 @@ int nb_value_equal(DF*df, int val);
 int nb_occ(DF*df, int val);
 
 void menu();
+
+void clear_buffer();
 
 #endif

@@ -14,6 +14,10 @@ DF *create_empty_DF() {
     df->colonne = malloc(REALLOC_SIZE*sizeof(COLUMN*));
     if (df->colonne==NULL)
         return NULL;
+    for(int i=0;i<REALLOC_SIZE;i++) {
+        df->colonne[i] = NULL;
+    }
+    df->taille_colonne = REALLOC_SIZE;
     df->nb_colonne = 0;
     df->nb_ligne = 0;
     df->index = malloc(sizeof(int)*REALLOC_SIZE);
@@ -33,16 +37,29 @@ void fill_line_df(DF *df,int line_index) {
         printf("inserer une valeur pour la ligne %d, colonne %s : \n",line_index,df->colonne[j]->titre);
         clear_buffer();
         scanf("%d",&value);
-        if (!insert_value_i(df->colonne[j],value,line_index)) {
+        int return_insert_value = insert_value_i(df->colonne[j],value,line_index);
+        if (return_insert_value == 0) {
             printf("erreur : la valeur n'est pas bien insere\n");
             delete_column(df->colonne[j]);
             return;
+        }
+        if (return_insert_value == 2) {
+            int *data=realloc(df->index,(df->colonne[0]->taille_physique+REALLOC_SIZE)*sizeof(int));
+            if (data==NULL){
+                printf("Erreur de realloc\n");
+                return;
+            }
+            df->index=data;
         }
     }
 
 }
 
 void fill_column_df(DF *df,int column_index) {
+    if (!df->colonne) {
+        printf("erreur il n'y a pas de colonne\n");
+        return;
+    }
     if (!df->colonne[column_index]) {
         printf("erreur il n'y a pas de colonne a cette indice\n");
         return;
@@ -99,19 +116,26 @@ void print_column_df(DF*df,int nb_colonne_a_print) {
         return;
     }
     for (int i = 0; i < nb_colonne_a_print; i++) {
-        printf("Colonne [%d] : ",i);
+        printf("%s[%d] : ",df->colonne[i]->titre,i);
         print_col(df->colonne[i]);
     }
 }
 
 void add_column(DF*df,char*titre) {
     COLUMN* new_cl = create_column(titre);
-
     if (new_cl==NULL){
         printf("Erreur d'allocation ! \n");
         return;
     }
-    for (int i = 0; i <= df->nb_colonne; i++) {
+    if (df->nb_colonne >= df->taille_colonne) {
+        COLUMN**data = realloc(df->colonne,(df->taille_colonne+REALLOC_SIZE)*sizeof(COLUMN*));
+        if (data==NULL) {
+            printf("Erreur de realloc\n");
+        }
+        df->colonne = data;
+        df->taille_colonne+=REALLOC_SIZE;
+    }
+    for (int i = 0; i < df->nb_colonne; i++) {
         if (df->colonne[i]==NULL) {
             df->colonne[i] = new_cl;
             if (df->nb_ligne != 0) {
@@ -129,7 +153,7 @@ void add_column(DF*df,char*titre) {
 }
 
 void delete_column_df(DF*df, int indice) {
-    if (df->colonne[indice] == NULL) {
+    if (df->colonne[indice] == NULL || indice <0 || df->nb_colonne <= indice) {
         printf("erreur : tu peux pas supprimer une colonne qui n'existe pas ! \n");
         return;
     }
@@ -146,16 +170,16 @@ void add_line(DF*df) {
     for (int i = 0; i < df->colonne[0]->taille_physique; i++) {
         if (df->index[i]<0 ) {
             if (i < df->colonne[0]->taille_logique) {
-                df->index[i] = abs(df->index[i]);
+                df->index[i] = df->nb_ligne;
                 fill_line_df(df,df->index[i]);
+                df->nb_ligne++;
+                return;
             }
-            else {
-                df->index[i] = df->nb_ligne++;
-                fill_line_df(df,i);
-            }
-            return;
         }
     }
+    df->index[df->nb_ligne] = df->nb_ligne;
+    fill_line_df(df,df->nb_ligne);
+    df->nb_ligne++;
 }
 
 void delete_line(DF*df,int indice) {
@@ -163,8 +187,14 @@ void delete_line(DF*df,int indice) {
         printf("erreur : tu ne peux pas supprimer une ligne qui n'existe pas ! \n");
         return;
     }
+    for (int i = 0; i < df->nb_ligne; i++) {
+        if (df->index[i] > indice) {
+            df->index[i]--;
+        }
+    }
     df->index[indice] = -df->index[indice];
     df->nb_ligne--;
+    df->colonne[0]->taille_logique--;
 }
 
 void delete_df(DF*df) {

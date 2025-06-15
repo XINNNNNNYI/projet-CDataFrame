@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "colonne.h"
 
-COLUMN*create_column(char*titre){
+COLUMN*create_column(char *titre){
     COLUMN*col=malloc(sizeof(COLUMN));
     if(col==NULL)
         return NULL;
-    col->titre=titre;
+    col->titre=strdup(titre);
     col->donnee = malloc(REALLOC_SIZE * sizeof(int));
     if (col->donnee == NULL) {
         printf("Erreur de malloc pour la colonne de donnee\n");
@@ -34,6 +34,7 @@ int insert_value(COLUMN*col, int value){
         }
         col->taille_physique+=REALLOC_SIZE;
         col->donnee=data;
+        return 2;
     }
     else if (col->taille_logique < col->taille_physique) {
         col->donnee[col->taille_logique++] = value;
@@ -53,13 +54,23 @@ int insert_value_i(COLUMN*col, int value,int num_line) {
         col->donnee[num_line] = value;
         col->taille_logique++;
     }
-    else if (col->donnee[num_line] != value) {
+    if (col->donnee[num_line] != value) {
         printf("Erreur, la valeur n'a pas bien ete insert\n");
         return 0;
     }
-    else {
-        printf("Erreur : votre ligne depasse taille physique.\n");
-        return 0;
+    if (num_line > col->taille_logique) {
+        col->donnee[num_line] = value;
+        col->taille_logique++;
+    }
+    if(num_line >= col->taille_physique) {
+        int *data=realloc(col->donnee,(col->taille_physique+REALLOC_SIZE)*sizeof(int));
+        if (data==NULL){
+            printf("Erreur de realloc\n");
+            return 0;
+        }
+        col->taille_physique+=REALLOC_SIZE;
+        col->donnee=data;
+        return 2;
     }
     return 1;
 }
@@ -72,7 +83,7 @@ void delete_column(COLUMN*col) {
 
 void print_col(COLUMN*col){
     if(col->donnee==NULL)
-        printf("%s : non initilise ! \n", col->titre);
+        printf("%s : non initialise ! \n", col->titre);
     else
         for (int i = 0; i < (col->taille_logique); i++) {
             printf("[%d] %d\n", i, col->donnee[i]);
@@ -81,7 +92,7 @@ void print_col(COLUMN*col){
 
 int nombre_occureneces(COLUMN*col, int valeur){
     if (col->donnee == NULL) {
-        printf("Erreur : colonne non initialisée.\n");
+        printf("Erreur : colonne non initialisee.\n");
         return -1;
     }
     printf("Valeur recherchee : %d\n", valeur);

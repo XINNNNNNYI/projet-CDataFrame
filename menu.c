@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "dataframe.h"
 
 void menu() {
@@ -30,14 +29,16 @@ void menu() {
             }
             case 3: {
                 int line_index;
-                printf("Quel ligne souhaiteriez vous supprimer ? \n");
+                printf("Quel ligne souhaiteriez vous supprimer ? (saisir l'indice) \n");
+                clear_buffer();
                 scanf("%d", &line_index);
                 delete_line(df,line_index);
                 break;
             }
             case 4: {
                 int column_index;
-                printf("Quel colonne souhaiteriez vous supprimer ?\n ");
+                printf("Quel colonne souhaiteriez vous supprimer ? (saisir l'indice)\n ");
+                clear_buffer();
                 scanf("%d", &column_index);
                 delete_column_df(df,column_index);
                 break;
@@ -51,6 +52,7 @@ void menu() {
                     "[4] - Le nombre de ligne(s)\n "
                     "[5] - Le nombre de colonne(s)\n "
                     "[0] - Revenir en arriere\n ");
+                clear_buffer();
                 scanf("%d", &option_print);
                 switch(option_print) {
                     case 1: {
@@ -60,6 +62,7 @@ void menu() {
                     case 2: {
                         int column_index;
                         printf("Quel colonne voulez vous \n");
+                        clear_buffer();
                         scanf("%d", &column_index);
                         print_column_df(df,column_index);
                         break;
@@ -67,6 +70,7 @@ void menu() {
                     case 3: {
                         int line_index;
                         printf("Quel ligne voulez vous \n");
+                        clear_buffer();
                         scanf("%d", &line_index);
                         print_line_df(df,line_index);
                         break;
@@ -93,8 +97,10 @@ void menu() {
                 char new_title[50];
                 int num_column;
                 printf("Tu veux renomer quel colonne ? (choisir un chiffre)\n");
+                clear_buffer();
                 scanf("%d", &num_column);
                 printf("Tu veux le renommer comment ?\n");
+                clear_buffer();
                 scanf("%49s",new_title);
                 rename_column(df,num_column,new_title);
                 break;
@@ -103,12 +109,13 @@ void menu() {
                 int option_p;
                 printf("\n Que voulez-vous faire ?\n "
                    "[1] - Regarder si une valeur existe\n "
-                   "[2] - Regarder le nombre de cellules contenant une valeur égale a x (x a saisie)\n "
-                   "[3] - Regarder le nombre de cellules contenant une valeur supérieure a x (x a saisir)\n "
-                   "[4] - Regarder le nombre de cellules contenant une valeur inférieure a x (x a saisir)\n "
+                   "[2] - Regarder le nombre de cellules contenant une valeur egale a x (x a saisie)\n "
+                   "[3] - Regarder le nombre de cellules contenant une valeur superieure a x (x a saisir)\n "
+                   "[4] - Regarder le nombre de cellules contenant une valeur inferieure a x (x a saisir)\n "
                    "[5] - Regarder le nombre d'occurences d'une valeur (valeur a saisir)\n "
                    "[6] - Remplacer une valeur\n "
                    "[0] - \n ");
+                clear_buffer();
                 scanf("%d", &option_p);
                 switch(option_p) {
                     case 1: {
@@ -126,6 +133,7 @@ void menu() {
                     case 2: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
+                        clear_buffer();
                         scanf("%d", &value);
                         printf("Il y a %d valeur(s) egale a %d \n",nb_value_equal(df,value),value);
                         break;
@@ -133,6 +141,7 @@ void menu() {
                     case 3: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
+                        clear_buffer();
                         scanf("%d", &value);
                         printf("Il y a %d valeur(s) superieur a %d \n",nb_value_sup(df,value),value);
                         break;
@@ -140,6 +149,7 @@ void menu() {
                     case 4: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
+                        clear_buffer();
                         scanf("%d", &value);
                         printf("Il y a %d valeur(s) inferieur a %d \n",nb_value_inf(df,value),value);
                         break;
@@ -147,6 +157,7 @@ void menu() {
                     case 5: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
+                        clear_buffer();
                         scanf("%d", &value);
                         printf("La valeur %d apparait %d fois \n",value,nb_occ(df,value));
                         break;
@@ -156,10 +167,13 @@ void menu() {
                         int nb_line_i;
                         int nb_column_j;
                         printf("Quel est la ligne de la valeur que vous voulez changer ?\n");
+                        clear_buffer();
                         scanf("%d", &nb_line_i);
                         printf("Quel est la colonne de la valeur que vous voulez changer ?\n");
+                        clear_buffer();
                         scanf("%d", &nb_column_j);
                         printf("Vous voulez changer en quel valeur ? \n");
+                        clear_buffer();
                         scanf("%d", &value);
                         replace_value(df,value,nb_line_i,nb_column_j);
                         printf("La valeur %d est normalemnt = a %d \n",value,df->colonne[nb_column_j]->donnee[df->index[nb_line_i]]);
