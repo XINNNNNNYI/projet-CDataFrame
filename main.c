@@ -9,7 +9,7 @@ int main() {
 
     char* caca = "caca";  // titre de la colonne, chaîne constante
 
-    Column* mycol = create_column(INT, caca);
+    Column* mycol = create_column(INT, "caca");
 
     int a = 52, b = 44, c = 15, d = 18;
     insert_value(mycol, &a);
@@ -24,11 +24,11 @@ int main() {
 
     return 0;
     // c'est un autre main
-    Column* mycol = create_column(CHAR);
+    Column* mycol = create_column(CHAR, "caca);
     char a = 'A', c = 'C';
-    inser_value(mycol, &a);
-    inser_value(mycol, NULL);
-    inser_value(mycol, &c);
+    insert_value(mycol, &a);
+    insert_value(mycol, NULL);
+    insert_value(mycol, &c);
     print_col(mycol);
     //le troisème main
      Column* col = create_column(INT, "caca");
