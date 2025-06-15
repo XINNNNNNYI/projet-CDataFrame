@@ -189,3 +189,17 @@ void print_col(Column* col){
             printf("[%u] %s\n", i, str);
         }
     }
+void info_column(Column* col) {
+    if (col == NULL) {
+        printf("La colonne est NULL.\n");
+        return;
+    }
+    
+    printf("Titre: %s\n", col->titre);
+    printf("Taille logique: %u\n", col->taille_logique);
+    printf("Taille physique: %u\n", col->taille_physique);
+    printf("Type de colonne: %d\n", col->column_type);
+    printf("Valid index: %d\n", col->valid_index);
+    printf("Sort direction: %d\n", col->sort_dir);
+    printf("Index size: %u\n", col->index_size);
+}
