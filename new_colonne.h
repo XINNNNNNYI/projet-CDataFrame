@@ -76,7 +76,7 @@ typedef struct  {
 
 // Fonctions associées
 Column* create_column(Enum_Type type, char* titre);
-int insert_value(Column* col, void* value);
+void insert_value(Column* col, void* value);
 void delete_column(Column* col);
 void print_object(Objet_value*ob, char* str, unsigned int taille_logique );
 void print_value(Column* col, unsigned long long int i, char* str, unsigned int taille_logique);
