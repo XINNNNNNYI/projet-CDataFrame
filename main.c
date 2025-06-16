@@ -2,6 +2,16 @@
 #include "dataframe.h"
 #include <stdio.h>
 int main() {
+    printf("----------------------------------------------\n"
+        "|              Projet CDataFrame             |\n"
+        "|                                            |\n"
+        "|         Realise par les etudiantes :       |\n"
+        "|            ZHAN Xinyi                      |\n"
+        "|            MOUMSIK Marwa                   |\n"
+        "|            BONNEFOND Juliette              |\n"
+        "|                                            |\n"
+        "----------------------------------------------\n\n");
+
     /*
     COLUMN*col = create_column("Colonne");
     print_col(col);
