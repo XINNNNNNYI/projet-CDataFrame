@@ -4,10 +4,11 @@
 
 COLUMN*create_column(char *titre){
     COLUMN*col=malloc(sizeof(COLUMN));
+    char* title = titre;
     if(col==NULL)
         return NULL;
-    col->titre = NULL;
-    col->titre=strdup(titre);
+    col->titre;
+    col->titre=title;
     col->donnee = malloc(REALLOC_SIZE * sizeof(int));
     if (col->donnee == NULL) {
         printf("Erreur de malloc pour la colonne de donnee\n");

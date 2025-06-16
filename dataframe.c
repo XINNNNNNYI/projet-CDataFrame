@@ -238,7 +238,7 @@ void rename_column(DF*df,int num_column, char*new_title) {
 int value_exists(DF*df, int value) {
     for (int i = 0; i < df->nb_ligne; i++) {
         for (int j = 0; j < df->nb_colonne; j++) {
-            if (value) {
+            if (value && df->index[i]>0) {
                 return 1;
             }
         }
