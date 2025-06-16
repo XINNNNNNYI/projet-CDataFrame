@@ -86,14 +86,16 @@ void print_df(DF *df) {
         printf("DF non initialisee\n");
         return;
     }
-    for (int i = 0; i < df->nb_ligne; i++) {
-        printf("Ligne [%d] :| ",i);
-        for (int j = 0; j < df->nb_colonne; j++) {
+    for (int i = 0; i < df->colonne[0]->taille_physique; i++) {
+        if (df->index[i]>=0) {
+            printf("Ligne [%d] :| ",i);
+            for (int j = 0; j < df->nb_colonne; j++) {
             if (df->colonne[j] != NULL) {
                 printf("%d |",df->colonne[j]->donnee[df->index[i]]);
             }
         }
-        printf("\n");
+            printf("\n");
+        }
     }
 }
 
@@ -103,9 +105,13 @@ void print_line_df(DF *df, int nb_ligne_a_print){
         return;
     }
     for (int i = 0; i < nb_ligne_a_print; i++) {
-        printf("Ligne [%d] : ",i);
-        for (int j = 0; j < df->nb_colonne; j++) {
-            printf(",%d \n",df->colonne[i]->donnee[df->index[j]]);
+        printf("Ligne [%d] :| ",i);
+        if (df->index[i]>=0) {
+            for (int j = 0; j < df->nb_colonne; j++) {
+                if (df->colonne[j] != NULL) {
+                    printf("%d |",df->colonne[j]->donnee[df->index[i]]);
+                }
+            }
         }
     }
 }
@@ -116,8 +122,15 @@ void print_column_df(DF*df,int nb_colonne_a_print) {
         return;
     }
     for (int i = 0; i < nb_colonne_a_print; i++) {
-        printf("%s[%d] : ",df->colonne[i]->titre,i);
-        print_col(df->colonne[i]);
+        if (df->colonne[i] != NULL) {
+            printf("%s[%d] : ",df->colonne[i]->titre,i);
+            for (int i = 0; i < df->nb_ligne; i++) {
+                printf("Ligne [%d] :| ",i);
+                if (df->index[i]>=0)
+                    printf("%d |",df->colonne[i]->donnee[df->index[i]]);
+            }
+        }
+
     }
 }
 
@@ -192,7 +205,12 @@ void delete_line(DF*df,int indice) {
             df->index[i]--;
         }
     }
-    df->index[indice] = -df->index[indice];
+    if (df->index[indice] == 0) {
+        df->index[indice] = -1;
+    }
+    else if (df->index[indice] > 0) {
+        df->index[indice] = -df->index[indice];
+    }
     df->nb_ligne--;
     df->colonne[0]->taille_logique--;
 }
