@@ -221,7 +221,6 @@ void delete_df(DF*df) {
     }
     for (int i = 0; i < df->nb_colonne; i++) {
         delete_column(df->colonne[i]);
-        free(df->colonne[i]);
     }
     free(df->index);
     free(df->colonne);
