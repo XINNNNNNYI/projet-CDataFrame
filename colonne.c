@@ -6,7 +6,7 @@ COLUMN*create_column(char *titre){
     COLUMN*col=malloc(sizeof(COLUMN));
     if(col==NULL)
         return NULL;
-    free(col->titre);
+    col->titre = NULL;
     col->titre=strdup(titre);
     col->donnee = malloc(REALLOC_SIZE * sizeof(int));
     if (col->donnee == NULL) {
