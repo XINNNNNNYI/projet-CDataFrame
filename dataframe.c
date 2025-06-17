@@ -36,7 +36,11 @@ void fill_line_df(DF *df,int line_index) {
     for (int j = 0; j < df->nb_colonne; j++) {
         printf("inserer une valeur pour la ligne %d, colonne %s : \n",line_index,df->colonne[j]->titre);
         clear_buffer();
-        scanf("%d",&value);
+        if (!scanf("%d", &value)) {
+            printf("ECRIS DES CHIFFRES STP \n");
+            clear_buffer();
+            continue;
+        }
         int return_insert_value = insert_value_i(df->colonne[j],value,line_index);
         if (return_insert_value == 0) {
             printf("erreur : la valeur n'est pas bien insere\n");
@@ -86,10 +90,17 @@ void print_df(DF *df) {
         printf("DF non initialisee\n");
         return;
     }
-    for (int i = 0; i < df->colonne[0]->taille_physique; i++) {
+    printf("Colonne :| ");
+    for (int j = 0; j < df->nb_colonne; j++) {
+        if (df->colonne[j] != NULL) {
+            printf(" %s |", df->colonne[j]->titre);
+        }
+    }
+    printf("\n");
+    for (int i = 0; i < df->nb_ligne +1 ; i++) {
         if (df->index[i]>=0) {
             printf("Ligne [%d] :| ",i);
-            for (int j = 0; j < df->nb_colonne; j++) {
+            for (int j = 0; j < df->nb_colonne + 1; j++) {
             if (df->colonne[j] != NULL) {
                 printf("%d |",df->colonne[j]->donnee[df->index[i]]);
             }
@@ -99,42 +110,48 @@ void print_df(DF *df) {
     }
 }
 
-void print_line_df(DF *df, int nb_ligne_a_print){
+void print_line_df(DF *df, int ligne_a_print) {
     if (!df) {
         printf("DF non initialisee\n");
         return;
     }
-    for (int i = 0; i < nb_ligne_a_print; i++) {
-        printf("Ligne [%d] :| ",i);
-        if (df->index[i]>=0) {
+    printf("Ligne [%d] :| ",ligne_a_print);
+    if (df->index[ligne_a_print]>=0) {
             for (int j = 0; j < df->nb_colonne; j++) {
                 if (df->colonne[j] != NULL) {
-                    printf("%d |",df->colonne[j]->donnee[df->index[i]]);
+                    printf("%d |",df->colonne[j]->donnee[df->index[ligne_a_print]]);
                 }
             }
         }
-    }
 }
 
-void print_column_df(DF*df,int nb_colonne_a_print) {
+void print_column_df(DF*df,int colonne_a_print) {
     if (!df) {
         printf("DF non initialisee\n");
         return;
     }
-    for (int i = 0; i < nb_colonne_a_print; i++) {
-        if (df->colonne[i] != NULL) {
-            printf("%s[%d] : ",df->colonne[i]->titre,i);
-            for (int i = 0; i < df->nb_ligne; i++) {
-                printf("Ligne [%d] :| ",i);
-                if (df->index[i]>=0)
-                    printf("%d |",df->colonne[i]->donnee[df->index[i]]);
-            }
+    if (df->colonne[colonne_a_print] != NULL || df->nb_colonne <= colonne_a_print) {
+        printf("%s : ",df->colonne[colonne_a_print]->titre);
+        for (int i = 0; i < df->nb_ligne; i++) {
+            printf("Ligne [%d] :| ",i);
+            if (df->index[i]>=0)
+                printf("%d |\n",df->colonne[i]->donnee[df->index[i]]);
         }
-
+    }
+    else if (df->colonne[colonne_a_print] == NULL) {
+        printf("Il n'y a pas de colonne valide \n");
     }
 }
 
-void add_column(DF*df,char*titre) {
+void add_column(DF*df) {
+    char* titre = malloc(50 * sizeof(char));
+    if (titre == NULL) {
+        printf("EREERUEURUE");
+        return;
+    }
+    printf("Insert titre : ");
+    clear_buffer();
+    scanf("%s",titre);
     COLUMN* new_cl = create_column(titre);
     if (new_cl==NULL){
         printf("Erreur d'allocation ! \n");
@@ -183,8 +200,17 @@ void add_line(DF*df) {
     for (int i = 0; i < df->colonne[0]->taille_physique; i++) {
         if (df->index[i]<0 ) {
             if (i < df->colonne[0]->taille_logique) {
-                df->index[i] = df->nb_ligne;
-                fill_line_df(df,df->index[i]);
+                for (int j = i; j < df->nb_ligne - i ; j++) {
+                    int tmp = df->index[j];
+                    df->index[j] = df->index[j+1];
+                    df->index[j+1] = tmp;
+                }
+                if (df->index[df->nb_ligne-1]< -df->index[df->nb_ligne]) {
+                    fill_line_df(df,0);
+                }
+                else {
+                     fill_line_df(df,df->index[df->nb_ligne-1]);
+                }
                 df->nb_ligne++;
                 return;
             }
@@ -196,20 +222,16 @@ void add_line(DF*df) {
 }
 
 void delete_line(DF*df,int indice) {
+
     if (df->index[indice] < 0) {
         printf("erreur : tu ne peux pas supprimer une ligne qui n'existe pas ! \n");
         return;
     }
-    for (int i = 0; i < df->nb_ligne; i++) {
-        if (df->index[i] > indice) {
-            df->index[i]--;
-        }
-    }
-    if (df->index[indice] == 0) {
-        df->index[indice] = -1;
-    }
-    else if (df->index[indice] > 0) {
+    if (df->index[indice] != 0) {
         df->index[indice] = -df->index[indice];
+    }
+    else {
+        df->index[indice] = -df->nb_ligne +1;
     }
     df->nb_ligne--;
     df->colonne[0]->taille_logique--;

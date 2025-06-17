@@ -62,10 +62,10 @@ int nombre_occureneces(COLUMN*col, int valeur);
 /**
  *
  * @param col Pointeur sur une colonne
- * @param valeur dont tu veux connaitre sa position
+ * @param indice dont tu veux connaitre sa position
  * @return int de l'indice de la position de valeure
  */
-int valeur_pos(COLUMN*col, int valeur);
+int valeur_pos(COLUMN*col, int indice);
 
 /**
  *

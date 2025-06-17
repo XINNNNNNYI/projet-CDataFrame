@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "colonne.h"
 
-COLUMN*create_column(char *titre){
+COLUMN*create_column(char * titre){
     COLUMN*col=malloc(sizeof(COLUMN));
     if(col==NULL)
         return NULL;
-    col->titre=titre;
+    col->titre = strdup(titre);
     col->donnee = malloc(REALLOC_SIZE * sizeof(int));
     if (col->donnee == NULL) {
         printf("Erreur de malloc pour la colonne de donnee\n");
@@ -77,6 +77,7 @@ int insert_value_i(COLUMN*col, int value,int num_line) {
 
 void delete_column(COLUMN*col) {
     free(col->donnee);
+    free(col->titre);
     free(col);
     col = NULL;
 }

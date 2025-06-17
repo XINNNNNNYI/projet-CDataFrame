@@ -22,7 +22,7 @@ void print_line_df(DF*df,int nb_ligne_a_print);
 
 void print_column_df(DF*df,int nb_colonne_a_print);
 
-void add_column(DF *df,char*titre);
+void add_column(DF *df);
 
 void delete_column_df(DF*df,int indice);
 
