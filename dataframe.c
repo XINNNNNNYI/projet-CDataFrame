@@ -33,10 +33,9 @@ void fill_line_df(DF *df,int line_index) {
     for (int j = 0; j < df->nb_colonne; j++) {
         printf("inserer une valeur pour la ligne %d, colonne %s : \n",line_index,df->colonne[j]->titre);
         clear_buffer();
-        if (!scanf("%d", &value)) {
+        while (!scanf("%d", &value)) {
             printf("ECRIS DES CHIFFRES STP \n");
             clear_buffer();
-            continue;
         }
         int return_insert_value = insert_value_i(df->colonne[j],value,line_index);
         if (return_insert_value == 0) {
@@ -76,7 +75,10 @@ void fill_column_df(DF *df,int column_index) {
             int value=0;
             printf("inserer une valeur pour la colonne %s, ligne : %d \n", df->colonne[column_index]->titre, i);
             clear_buffer();
-            scanf("%d",&value);
+            while (!scanf("%d", &value)) {
+                printf("ECRIS DES CHIFFRES STP \n");
+                clear_buffer();
+            }
             if (!insert_value(df->colonne[column_index],value)) {
                 printf("erreur : la valeur n'est pas bien insere");
                 delete_column(df->colonne[column_index]);
@@ -87,7 +89,7 @@ void fill_column_df(DF *df,int column_index) {
 }
 
 void print_df(DF *df) {
-    if (!df) {
+    if (!df || df->nb_colonne == 0) {
         printf("DF non initialisee\n");
         return;
     }
@@ -116,6 +118,9 @@ void print_line_df(DF *df, int ligne_a_print) {
         printf("DF non initialisee\n");
         return;
     }
+    if (ligne_a_print >= df->nb_ligne) {
+        printf("Erreur : ligne invalide \n");
+    }
     if (df->index[ligne_a_print]>0) {
         printf("Ligne [%d] :| ",ligne_a_print);
         for (int j = 0; j < df->nb_colonne; j++) {
@@ -134,6 +139,13 @@ void print_column_df(DF*df,int colonne_a_print) {
         printf("DF non initialisee\n");
         return;
     }
+    if (colonne_a_print >= df->nb_colonne) {
+        printf("Erreur : colonne invalide \n");
+    }
+    if (df->colonne[colonne_a_print] == NULL) {
+        printf("Il n'y a pas de colonne valide \n");
+        return;
+    }
     if (df->colonne[colonne_a_print] != NULL || df->nb_colonne <= colonne_a_print) {
         printf("%s : ",df->colonne[colonne_a_print]->titre);
         for (int i = 1; i < df->nb_ligne; i++) {
@@ -142,9 +154,7 @@ void print_column_df(DF*df,int colonne_a_print) {
                 printf("%d |\n",df->colonne[i]->donnee[df->index[i]]);
         }
     }
-    else if (df->colonne[colonne_a_print] == NULL) {
-        printf("Il n'y a pas de colonne valide \n");
-    }
+
 }
 
 void add_column(DF*df) {
@@ -210,7 +220,6 @@ void add_line(DF*df) {
             df->index[df->nb_ligne] = abs(df->index[df->nb_ligne]);
         }
     }
-    printf("indice : %d \n",df->index[df->nb_ligne]);
     fill_line_df(df,df->index[df->nb_ligne]);
 }
 
@@ -225,7 +234,6 @@ void delete_line(DF*df,int indice) {
         df->index[i] = df->index[i+1];
         df->index[i+1] = tmp;
     }
-    printf("indice : %d \n",df->index[df->nb_ligne]);
     df->nb_ligne--;
 }
 
@@ -250,9 +258,9 @@ void rename_column(DF*df,int num_column, char*new_title) {
 }
 
 int value_exists(DF*df, int value) {
-    for (int i = 1; i < df->nb_ligne; i++) {
+    for (int i = 1; i <= df->nb_ligne; i++) {
         for (int j = 0; j < df->nb_colonne; j++) {
-            if (value && df->index[i]>0) {
+            if (df->colonne[j]->donnee[i] == value) {
                 return 1;
             }
         }
@@ -260,12 +268,17 @@ int value_exists(DF*df, int value) {
     return 0;
 }
 
-void replace_value(DF*df, int value,int nb_line_i,int nb_column_j) {
+int replace_value(DF*df, int value,int nb_line_i,int nb_column_j) {
+    if (df->nb_ligne < nb_line_i || df->nb_colonne < nb_column_j) {
+        printf("CETTE CELLULE EXISTE PAS ! \n");
+        return 0;
+    }
     if (!df->colonne[nb_column_j]->donnee[df->index[nb_line_i]]) {
         printf("erreur : cette case n'existe pas ! \n");
-        return;
+        return 0;
     }
     df->colonne[nb_column_j]->donnee[df->index[nb_line_i]] = value;
+    return 1;
     }
 
 void print_nb_column(DF*df) {

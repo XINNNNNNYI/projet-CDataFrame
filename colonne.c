@@ -7,6 +7,7 @@ COLUMN*create_column(char * titre){
     if(col==NULL)
         return NULL;
     col->titre = strdup(titre);
+    free(titre);
     col->donnee = malloc(REALLOC_SIZE * sizeof(int));
     if (col->donnee == NULL) {
         printf("Erreur de malloc pour la colonne de donnee\n");
@@ -99,7 +100,7 @@ int nombre_occureneces(COLUMN*col, int valeur){
     printf("Valeur recherchee : %d\n", valeur);
 
     int oc=0;
-    for(int i=0; i< col->taille_logique; i++){
+    for(int i=0; i< col->taille_logique+1; i++){
         if(col->donnee[i]==valeur){
             oc++;
         }
@@ -108,7 +109,7 @@ int nombre_occureneces(COLUMN*col, int valeur){
 }
 
 int valeur_pos(COLUMN*col, int indice){
-    if(indice>=col->taille_logique || indice<0) {
+    if(indice>=col->taille_logique || indice<1) {
         printf("erreur : la position est hors limite\n");
         return -1;
     }
@@ -118,7 +119,7 @@ int valeur_pos(COLUMN*col, int indice){
 
 int nb_valeur_supereur(COLUMN*col, int valeure) {
     int oc = 0;
-    for (int i = 0; i < col->taille_logique;i++) {
+    for (int i = 1; i < col->taille_logique+1;i++) {
         if (col->donnee[i] > valeure) {
             oc++;
         }
@@ -128,7 +129,7 @@ int nb_valeur_supereur(COLUMN*col, int valeure) {
 
 int nb_valeur_inferieur(COLUMN*col, int valeur) {
     int oc = 0;
-    for (int i = 0; i < col->taille_logique;i++) {
+    for (int i = 1; i < col->taille_logique+1;i++) {
         if (col->donnee[i] < valeur) {
             oc++;
         }
@@ -138,7 +139,7 @@ int nb_valeur_inferieur(COLUMN*col, int valeur) {
 
 int nb_valeur_egale(COLUMN*col, int valeur) {
     int oc = 0;
-    for (int i = 0; i < col->taille_logique;i++) {
+    for (int i = 1; i < col->taille_logique +1;i++) {
         if (col->donnee[i] == valeur) {
             oc++;
         }

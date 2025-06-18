@@ -14,10 +14,9 @@ void menu() {
            "[6] - Renomer une colonne\n "
            "[7] - Autres fonctionnalites\n "
            "[0] - Quitter\n ");
-        if (!scanf("%d", &option)) {
+        while (!scanf("%d", &option)) {
             printf("ECRIS DES CHIFFRES STP \n");
             clear_buffer();
-            continue;
         }
         switch (option) {
             case 1: {
@@ -32,9 +31,8 @@ void menu() {
                 int line_index;
                 printf("Quel ligne souhaiteriez vous supprimer ?\n");
                 clear_buffer();
-                if (!scanf("%d", &line_index)) {
+                while (!scanf("%d", &line_index)) {
                     printf("ECRIS DES CHIFFRES STP \n");
-                    continue;
                 }
                 delete_line(df,line_index);
                 break;
@@ -43,9 +41,8 @@ void menu() {
                 int column_index;
                 printf("Quel colonne souhaiteriez vous supprimer ?\n ");
                 clear_buffer();
-                if (!scanf("%d", &column_index)) {
+                while (!scanf("%d", &column_index)) {
                     printf("ECRIS DES CHIFFRES STP \n");
-                    continue;
                 }
                 delete_column_df(df,column_index);
                 break;
@@ -60,9 +57,8 @@ void menu() {
                     "[5] - Le nombre de colonne(s)\n "
                     "[0] - Revenir en arriere\n ");
                 clear_buffer();
-                if (!scanf("%d", &option_print)) {
+                while (!scanf("%d", &option_print)) {
                     printf("ECRIS DES CHIFFRES STP \n");
-                    continue;
                 }
                 switch(option_print) {
                     case 1: {
@@ -73,9 +69,8 @@ void menu() {
                         int column_index;
                         printf("Quel colonne voulez vous \n");
                         clear_buffer();
-                        if (!scanf("%d", &column_index)) {
+                        while (!scanf("%d", &column_index)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         print_column_df(df,column_index);
                         break;
@@ -84,9 +79,8 @@ void menu() {
                         int line_index;
                         printf("Quel ligne voulez vous \n");
                         clear_buffer();
-                        if (!scanf("%d", &line_index)) {
+                        while (!scanf("%d", &line_index)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         print_line_df(df,line_index);
                         break;
@@ -114,9 +108,8 @@ void menu() {
                 int num_column;
                 printf("Tu veux renomer quel colonne ? (choisir un chiffre)\n");
                 clear_buffer();
-                if (!scanf("%d", &num_column)) {
+                while (!scanf("%d", &num_column)) {
                     printf("ECRIS DES CHIFFRES STP \n");
-                    continue;
                 }
                 printf("Tu veux le renommer comment ?\n");
                 clear_buffer();
@@ -135,17 +128,15 @@ void menu() {
                    "[6] - Remplacer une valeur\n "
                    "[0] - \n ");
                 clear_buffer();
-                if (!scanf("%d", &option_p)) {
+                while (!scanf("%d", &option_p)) {
                     printf("ECRIS DES CHIFFRES STP \n");
-                    continue;
                 }
                 switch(option_p) {
                     case 1: {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         if (value_exists(df,value) == 1 ) {
                             printf("la valeur existe ! \n");
@@ -159,9 +150,8 @@ void menu() {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
                         clear_buffer();
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("Il y a %d valeur(s) egale a %d \n",nb_value_equal(df,value),value);
                         break;
@@ -170,9 +160,8 @@ void menu() {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
                         clear_buffer();
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("Il y a %d valeur(s) superieur a %d \n",nb_value_sup(df,value),value);
                         break;
@@ -181,9 +170,8 @@ void menu() {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
                         clear_buffer();
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("Il y a %d valeur(s) inferieur a %d \n",nb_value_inf(df,value),value);
                         break;
@@ -192,9 +180,8 @@ void menu() {
                         int value;
                         printf("Pour quel valeur voulez vous regarder ? \n");
                         clear_buffer();
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("La valeur %d apparait %d fois \n",value,nb_occ(df,value));
                         break;
@@ -205,24 +192,22 @@ void menu() {
                         int nb_column_j;
                         printf("Quel est la ligne de la valeur que vous voulez changer ?\n");
                         clear_buffer();
-                        if (!scanf("%d", &nb_line_i)) {
+                        while (!scanf("%d", &nb_line_i)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("Quel est la colonne de la valeur que vous voulez changer ?\n");
                         clear_buffer();
-                        if (!scanf("%d", &nb_column_j)) {
+                        while (!scanf("%d", &nb_column_j)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
                         printf("Vous voulez changer en quel valeur ? \n");
                         clear_buffer();
-                        if (!scanf("%d", &value)) {
+                        while (!scanf("%d", &value)) {
                             printf("ECRIS DES CHIFFRES STP \n");
-                            continue;
                         }
-                        replace_value(df,value,nb_line_i,nb_column_j);
-                        printf("La valeur %d est normalemnt = a %d \n",value,df->colonne[nb_column_j]->donnee[df->index[nb_line_i]]);
+                        if (!replace_value(df,value,nb_line_i,nb_column_j)) {
+                            printf("La valeur %d est normalemnt = a %d \n",value,df->colonne[nb_column_j]->donnee[df->index[nb_line_i]]);
+                        }
                         break;
                     }
                     case 7: {

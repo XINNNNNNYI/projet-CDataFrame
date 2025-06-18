@@ -36,7 +36,7 @@ void rename_column(DF*df, int num_column,char*new_title);
 
 int value_exists(DF*df, int value);
 
-void replace_value(DF*df, int value,int nb_line_i,int nb_column_j);
+int replace_value(DF*df, int value,int nb_line_i,int nb_column_j);
 
 void print_nb_column(DF*df);
 
