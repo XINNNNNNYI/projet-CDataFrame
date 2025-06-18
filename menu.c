@@ -30,7 +30,7 @@ void menu() {
             }
             case 3: {
                 int line_index;
-                printf("Quel ligne souhaiteriez vous supprimer ? (saisir l'indice) \n");
+                printf("Quel ligne souhaiteriez vous supprimer ?\n");
                 clear_buffer();
                 if (!scanf("%d", &line_index)) {
                     printf("ECRIS DES CHIFFRES STP \n");
@@ -41,7 +41,7 @@ void menu() {
             }
             case 4: {
                 int column_index;
-                printf("Quel colonne souhaiteriez vous supprimer ? (saisir l'indice)\n ");
+                printf("Quel colonne souhaiteriez vous supprimer ?\n ");
                 clear_buffer();
                 if (!scanf("%d", &column_index)) {
                     printf("ECRIS DES CHIFFRES STP \n");
