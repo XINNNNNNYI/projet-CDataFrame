@@ -56,7 +56,6 @@ void fill_line_df(DF *df,int line_index) {
             df->index=data;
         }
     }
-
 }
 
 void fill_column_df(DF *df,int column_index) {

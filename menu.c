@@ -54,8 +54,8 @@ void menu() {
                 int option_print;
                 printf("\nQue voulez-vous afficher ?\n "
                     "[1] - La dataframe entiere \n "
-                    "[2] - Une partie des colonnes\n "
-                    "[3] - Une partie des lignes\n "
+                    "[2] - Une colonne\n "
+                    "[3] - Une ligne\n "
                     "[4] - Le nombre de ligne(s)\n "
                     "[5] - Le nombre de colonne(s)\n "
                     "[0] - Revenir en arriere\n ");
