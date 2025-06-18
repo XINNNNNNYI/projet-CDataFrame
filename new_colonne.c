@@ -194,12 +194,67 @@ void info_column(Column* col) {
         printf("La colonne est NULL.\n");
         return;
     }
+}
+int Partition(Column_Type **donnee, int gauche, int droite, int sort_dir) {
+   
+    Column_Type *pivot=donnee[droite];
+    int i=gauche-1;
+    for(int j=gauche; j<droite; j++){
+        if ((sort_dir == croiss && donnee[j] < pivot) || (sort_dir == decroiss && donnee[j] > pivot))
+            i++;
+            Column_Type *temp=donnee[i];
+            donnee[i]=donnee[j];
+            donnee[j]=temp;
+    }
+
+  return i+1;
+}
+
+void quicksoort(Column_Type **donnee, int gauche, int droite, int sort_dir) {
     
-    printf("Titre: %s\n", col->titre);
-    printf("Taille logique: %u\n", col->taille_logique);
-    printf("Taille physique: %u\n", col->taille_physique);
-    printf("Type de colonne: %d\n", col->column_type);
-    printf("Valid index: %d\n", col->valid_index);
-    printf("Sort direction: %d\n", col->sort_dir);
-    printf("Index size: %u\n", col->index_size);
+        if(gauche < droite) {
+            int pivot = Partition(donnee, gauche, droite,sort_dir);
+            quicksoort(donnee, gauche, pivot - 1, sort_dir);
+            quicksoort(donnee, pivot + 1, droite, sort_dir);
+    
+    
+        }
+}
+
+//Fonction de tri
+
+void sort(Column* col, int sort_dir){
+    Column_Type* k;
+    
+    if(col==NULL||col->donnee==NULL||col->taille_logique==0){
+        return;
+
+    }
+    
+    if(col->valid_index==-1){
+        //tri rapide
+        for(unsigned int i=2; i<col->taille_logique; i++){
+             k=col->donnee[i];
+
+            unsigned int j=i-1;
+            while(j>=0 && ((sort_dir==1 && col->donnee[j]>k) || (sort_dir==0 && col->donnee[j]<k))){
+                col->donnee[j+1]=col->donnee[j];
+                j--;
+            }
+            col->donnee[j+1]=k; 
+
+        }
+    }else if(col->valid_index==0){
+
+        //tri par insertion
+        quicksoort(col->donnee, 0, col->taille_logique - 1, sort_dir);
+        col->valid_index = 1;
+        col->sort_dir = sort_dir;
+    } else {
+        printf("Le type de tri n'est pas géré.\n");
+        return;
+
+    
+        
+    }
 }
