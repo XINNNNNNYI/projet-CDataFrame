@@ -20,7 +20,8 @@ DF *create_empty_DF() {
     df->taille_colonne = REALLOC_SIZE;
     df->nb_colonne = 0;
     df->nb_ligne = 0;
-    df->index = calloc(REALLOC_SIZE, sizeof(int));
+    df->index = malloc(REALLOC_SIZE*sizeof(int));
+    memset(df->index,-1,REALLOC_SIZE*sizeof(int));
     return df;
 }
 
@@ -30,11 +31,15 @@ void fill_line_df(DF *df,int line_index) {
         return;
     }
     int value=0;
+    if (line_index > df->nb_ligne || line_index < 0) {
+        printf("erreur : la ligne existe pas\n");
+        return;
+    }
     for (int j = 0; j < df->nb_colonne; j++) {
         printf("inserer une valeur pour la ligne %d, colonne %s : \n",line_index,df->colonne[j]->titre);
         clear_buffer();
         while (!scanf("%d", &value)) {
-            printf("ECRIS DES CHIFFRES STP \n");
+            printf("Veuillez saisir des chiffres\n");
             clear_buffer();
         }
         int return_insert_value = insert_value_i(df->colonne[j],value,line_index);
@@ -50,7 +55,7 @@ void fill_line_df(DF *df,int line_index) {
                 return;
             }
             for (int i = df->colonne[0]->taille_physique; i < df->colonne[0]->taille_physique+REALLOC_SIZE; i++) {
-                data[i] = 0;
+                data[i] = -1;
             }
             df->index=data;
         }
@@ -70,13 +75,13 @@ void fill_column_df(DF *df,int column_index) {
         printf("t'as pas de ligne donc je ne vais pas pouvoir saisir de donnee !\n");
         return;
     }
-    for (int i = 1; i < df->nb_ligne; i++) {
-        if (df->index[i] > 0) {
+    for (int i = 0; i < df->nb_ligne; i++) {
+        if (df->index[i] > -1) {
             int value=0;
             printf("inserer une valeur pour la colonne %s, ligne : %d \n", df->colonne[column_index]->titre, i);
             clear_buffer();
             while (!scanf("%d", &value)) {
-                printf("ECRIS DES CHIFFRES STP \n");
+                printf("Veuillez saisir des chiffres\n");
                 clear_buffer();
             }
             if (!insert_value(df->colonne[column_index],value)) {
@@ -94,16 +99,16 @@ void print_df(DF *df) {
         return;
     }
     printf("Colonne :| ");
-    for (int j = 0; j < df->nb_colonne; j++) {
+    for (int j = 0; j < df->taille_colonne; j++) {
         if (df->colonne[j] != NULL) {
             printf(" %s |", df->colonne[j]->titre);
         }
     }
     printf("\n");
-    for (int i = 1; i < df->colonne[0]->taille_logique +1 ; i++) {
-        if (df->index[i]>0) {
+    for (int i = 0; i < df->nb_ligne; i++) {
+        if (df->index[i]>-1) {
             printf("Ligne [%d] :| ",i);
-            for (int j = 0; j < df->nb_colonne + 1; j++) {
+            for (int j = 0; j < df->taille_colonne; j++) {
             if (df->colonne[j] != NULL) {
                 printf("%d |",df->colonne[j]->donnee[df->index[i]]);
             }
@@ -118,7 +123,7 @@ void print_line_df(DF *df, int ligne_a_print) {
         printf("DF non initialisee\n");
         return;
     }
-    if (ligne_a_print >= df->nb_ligne) {
+    if (ligne_a_print > df->nb_ligne) {
         printf("Erreur : ligne invalide \n");
     }
     if (df->index[ligne_a_print]>0) {
@@ -148,19 +153,18 @@ void print_column_df(DF*df,int colonne_a_print) {
     }
     if (df->colonne[colonne_a_print] != NULL || df->nb_colonne <= colonne_a_print) {
         printf("%s : ",df->colonne[colonne_a_print]->titre);
-        for (int i = 1; i < df->nb_ligne; i++) {
+        for (int i = 0; i < df->nb_ligne; i++) {
             printf("Ligne [%d] :| ",i);
-            if (df->index[i]>0)
+            if (df->index[i]>-1)
                 printf("%d |\n",df->colonne[i]->donnee[df->index[i]]);
         }
     }
-
 }
 
 void add_column(DF*df) {
     char* titre = malloc(50 * sizeof(char));
     if (titre == NULL) {
-        printf("EREERUEURUE");
+        printf("ERREUR DE MALLOC \n");
         return;
     }
     printf("Insert titre : ");
@@ -179,7 +183,7 @@ void add_column(DF*df) {
         df->colonne = data;
         df->taille_colonne+=REALLOC_SIZE;
     }
-    for (int i = 0; i < df->nb_colonne; i++) {
+    for (int i = 0; i <= df->nb_colonne; i++) {
         if (df->colonne[i]==NULL) {
             df->colonne[i] = new_cl;
             if (df->nb_ligne != 0) {
@@ -211,24 +215,18 @@ void add_line(DF*df) {
         printf("Erreur : y'a  pas de colonne veillez cree un aavnt de creer un ligne ! \n");
         return;
     }
-    df->nb_ligne++;
-    if (df->index[df->nb_ligne]<1 ) {
-        if (df->index[df->nb_ligne] == 0 ){
-            df->index[df->nb_ligne] = df->nb_ligne;
-        }
-        else {
-            df->index[df->nb_ligne] = abs(df->index[df->nb_ligne]);
-        }
+    if (df->index[df->nb_ligne] == -1 ) {
+        df->index[df->nb_ligne] = df->nb_ligne;
     }
     fill_line_df(df,df->index[df->nb_ligne]);
+    df->nb_ligne++;
 }
 
 void delete_line(DF*df,int indice) {
-    if (df->index[indice] < 1 || indice > df->nb_ligne) {
-        printf("erreur : tu ne peux pas supprimer une ligne qui n'existe pas ! \n");
+    if (df->index[indice] < 0 || indice > df->nb_ligne) {
+        printf("Erreur : tu ne peux pas supprimer une ligne qui n'existe pas ! \n");
         return;
     }
-    df->index[indice] = -df->index[indice] ;
     for (int i = indice; i < df->nb_ligne; i++) {
         int tmp = df->index[i];
         df->index[i] = df->index[i+1];
@@ -238,11 +236,10 @@ void delete_line(DF*df,int indice) {
 }
 
 void delete_df(DF*df) {
-    for (int i = 1; i < df->nb_ligne; i++) {
-        delete_line(df,i);
-    }
-    for (int i = 0; i < df->nb_colonne; i++) {
-        delete_column(df->colonne[i]);
+    for (int i = 0; i < df->taille_colonne; i++) {
+        if (df->colonne[i]) {
+            delete_column(df->colonne[i]);
+        }
     }
     free(df->index);
     free(df->colonne);
@@ -258,7 +255,7 @@ void rename_column(DF*df,int num_column, char*new_title) {
 }
 
 int value_exists(DF*df, int value) {
-    for (int i = 1; i <= df->nb_ligne; i++) {
+    for (int i = 0; i < df->nb_ligne; i++) {
         for (int j = 0; j < df->nb_colonne; j++) {
             if (df->colonne[j]->donnee[i] == value) {
                 return 1;
@@ -270,7 +267,7 @@ int value_exists(DF*df, int value) {
 
 int replace_value(DF*df, int value,int nb_line_i,int nb_column_j) {
     if (df->nb_ligne < nb_line_i || df->nb_colonne < nb_column_j) {
-        printf("CETTE CELLULE EXISTE PAS ! \n");
+        printf("CETTE CELLULE N'EXISTE PAS ! \n");
         return 0;
     }
     if (!df->colonne[nb_column_j]->donnee[df->index[nb_line_i]]) {

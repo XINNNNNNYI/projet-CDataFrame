@@ -100,7 +100,7 @@ int nombre_occureneces(COLUMN*col, int valeur){
     printf("Valeur recherchee : %d\n", valeur);
 
     int oc=0;
-    for(int i=0; i< col->taille_logique+1; i++){
+    for(int i=0; i< col->taille_logique; i++){
         if(col->donnee[i]==valeur){
             oc++;
         }
@@ -109,7 +109,7 @@ int nombre_occureneces(COLUMN*col, int valeur){
 }
 
 int valeur_pos(COLUMN*col, int indice){
-    if(indice>=col->taille_logique || indice<1) {
+    if(indice>=col->taille_logique || indice<0) {
         printf("erreur : la position est hors limite\n");
         return -1;
     }
@@ -117,10 +117,10 @@ int valeur_pos(COLUMN*col, int indice){
     return col->donnee[indice];
 }
 
-int nb_valeur_supereur(COLUMN*col, int valeure) {
+int nb_valeur_supereur(COLUMN*col, int valeur) {
     int oc = 0;
-    for (int i = 1; i < col->taille_logique+1;i++) {
-        if (col->donnee[i] > valeure) {
+    for (int i = 1; i < col->taille_logique;i++) {
+        if (col->donnee[i] > valeur) {
             oc++;
         }
     }
@@ -129,7 +129,7 @@ int nb_valeur_supereur(COLUMN*col, int valeure) {
 
 int nb_valeur_inferieur(COLUMN*col, int valeur) {
     int oc = 0;
-    for (int i = 1; i < col->taille_logique+1;i++) {
+    for (int i = 1; i < col->taille_logique;i++) {
         if (col->donnee[i] < valeur) {
             oc++;
         }
@@ -139,7 +139,7 @@ int nb_valeur_inferieur(COLUMN*col, int valeur) {
 
 int nb_valeur_egale(COLUMN*col, int valeur) {
     int oc = 0;
-    for (int i = 1; i < col->taille_logique +1;i++) {
+    for (int i = 1; i < col->taille_logique;i++) {
         if (col->donnee[i] == valeur) {
             oc++;
         }
