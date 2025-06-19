@@ -1,14 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "new_colonne.h"
+
+Enum_Type demander_type_colonne() {
+    int choix = -1;
+    printf("Choisissez le type de colonne :\n");
+    printf("1. UINT\n");
+    printf("2. INT\n");
+    printf("3. CHAR\n");
+    printf("4. FLOAT\n");
+    printf("5. DOUBLE\n");
+    printf("6. STRING\n");
+    printf("7. USHORT\n");
+    printf("8. OBJECT\n");
+    printf("9. SHORT\n");
+    printf("10. ULONG\n");
+    printf("11. LONG\n");
+    printf("12. UCHAR\n");
+    printf("Votre choix : \n");
+    scanf("%d", &choix);
+
+    switch (choix) {
+        case 1: return UINT;
+        case 2: return INT;
+        case 3: return CHAR;
+        case 4: return FLOAT;
+        case 5: return DOUBLE;
+        case 6: return STRING;
+        case 7: return USHORT;
+        case 8: return OBJECT;
+        case 9: return SHORT;
+        case 10: return ULONG;
+        case 11: return LONG;
+        case 12: return UCHAR;
+        default:
+            printf("Choix invalide, type UINT sélectionné par défaut.\n");
+            return UINT;
+    }
+}
 
 int main() {
     Column* col = NULL;
-    int running = 1;
-    int choix;
+    
+    int choix=-1;
 
-    while (running) {
+    while (choix!= 0) {
         printf("\n=== MENU TEST COLONNE ===\n");
         printf("1. Créer une colonne d'entiers\n");
         printf("2. Insérer une valeur\n");
@@ -26,8 +62,9 @@ int main() {
         switch (choix) {
             case 1:
                 if (col) delete_column(col);
-                col = create_column(INT, "Test");
-                printf("Colonne créée.\n");
+                Enum_Type type = demander_type_colonne();
+                col = create_column(type, "Test");
+                printf("Colonne créée de type %d.\n", type);
                 break;
             case 2: {
                 if (!col) { printf("Créez d'abord une colonne.\n"); break; }
@@ -74,7 +111,7 @@ int main() {
                 }
                 break;
             case 0:
-                running = 0;
+                choix = 0;
                 if (col) delete_column(col);
                 printf("Au revoir !\n");
                 break;
@@ -84,6 +121,10 @@ int main() {
     }
     return 0;
 }
+
+
+
+
 
 
 
